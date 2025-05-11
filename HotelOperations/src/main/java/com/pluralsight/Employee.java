@@ -1,17 +1,24 @@
 package com.pluralsight;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+
 public class Employee {
     private int employeeId;
     private String name;
     private String department;
     private double payRate;
     private float hoursWorked;
+    private double punchInTime;
 
-    private Employee(int employeeId, String name, String department, double payRate, float hoursWorked) {
+
+    public Employee(int employeeId, String name, String department, double payRate) {
         this.employeeId = employeeId;
         this.name = name;
         this.department = department;
         this.payRate = payRate;
+        this.hoursWorked = hoursWorked;
     }
 
 
@@ -53,9 +60,9 @@ public class Employee {
     }
 
     public double getRegularHours() {
-        if(hoursWorked < 40) {
+        if (hoursWorked < 40) {
             return hoursWorked;
-        }else {
+        } else {
             return 40;
         }
     }
@@ -70,11 +77,33 @@ public class Employee {
 
     public double getTotalPay() {
         return (getOverTimeHours() * payRate * 1.5) + (getRegularHours() * payRate);
-        }
     }
 
 
+    public void punchIn() {
+        LocalDateTime punchIn = LocalDateTime.now();
+        double hours = punchIn.getHour();
+        double fractionOfHour = punchIn.getMinute() / 60f;
+        this.punchInTime = (hours + fractionOfHour);
+
+    }
 
 
+    public void punchOut() {
+        LocalDateTime punchOut = LocalDateTime.now();
+        double hours = punchOut.getHour();
+        double minutes = punchOut.getMinute();
+        double fractionOfHour = punchOut.getMinute() / 60f;
+        double punchOutTime = hours + fractionOfHour;
+
+        this.hoursWorked += (punchOutTime - this.punchInTime);
+
+    }
 
 }
+
+
+
+
+
+
